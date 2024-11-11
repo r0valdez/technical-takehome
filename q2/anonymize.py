@@ -1,3 +1,7 @@
+import re
+
+common_names = {"alice", "bob", "charlie", "dave", "eve"}
+
 def anonymize_names_parta(text: str):
     """
     Anonymizes names in the given text by replacing them with 'ANON'. Assume names are capitalized, and no other words are.
@@ -18,8 +22,7 @@ def anonymize_names_parta(text: str):
     Returns:
         str: The text with names anonymized.
     """
-    # Replace all capitalized words with 'ANON' (a regular expression might be helpful; see the `re` module)
-    anonymized_text = "..."
+    anonymized_text = re.sub(r'\b[A-Z][a-zA-Z]*\b', 'ANON', text)
     return anonymized_text
  
 def anonymize_names_partb(text: str):
@@ -35,8 +38,18 @@ def anonymize_names_partb(text: str):
         str: The text with names anonymized.
     """
     # Placeholder implementation: This needs heuristics to identify names
-    anonymized_text = text  # This is where the logic will go
-    return anonymized_text
+    words = text.split()
+    anonymized_words = []
+
+    for word in words:
+        word_cleaned = re.sub(r'[^\w\s]', '', word).lower()
+        
+        if word_cleaned in common_names:
+            anonymized_words.append("ANON")
+        else:
+            anonymized_words.append(word)
+    
+    return ' '.join(anonymized_words)
  
  
 if __name__ == '__main__':
